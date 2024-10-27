@@ -183,7 +183,7 @@ model.to(device)
 initial_weights = model.state_dict()
 
 # Load weights
-model_dict = torch.load(weights_path)
+model_dict = torch.load(weights2_path)
 model.load_state_dict(model_dict, strict=False)
 
 # ---------------------------- #

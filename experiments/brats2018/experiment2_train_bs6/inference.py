@@ -169,7 +169,6 @@ grandparent_dir = os.path.dirname(parent_dir)
 grand_grandparent_dir = os.path.dirname(grandparent_dir)
 
 config_path = os.path.join(this_file_dir, "config.yaml")
-weights_path = os.path.join(grand_grandparent_dir, "segformer_weights.pth")
 weights2_path = os.path.join(this_file_dir, 'model_checkpoints', 'best_dice_checkpoint', 'pytorch_model.bin')
 
 # Model configuration
@@ -183,7 +182,7 @@ model.to(device)
 initial_weights = model.state_dict()
 
 # Load weights
-model_dict = torch.load(weights_path)
+model_dict = torch.load(weights2_path)
 model.load_state_dict(model_dict, strict=False)
 
 # ---------------------------- #
