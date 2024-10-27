@@ -13,7 +13,7 @@ class Brats2017Task1Dataset(Dataset):
     """
 
     def __init__(
-        self, root_dir: str, is_train: bool = True, transform=None, fold_id: int = None
+        self, root_dir: str, is_train: bool = True, transform=None, fold_id: int = None, is_2018: bool = False
     ):
         """
         root_dir: path to (BraTS2021_Training_Data) folder
@@ -31,9 +31,14 @@ class Brats2017Task1Dataset(Dataset):
             csv_fp = os.path.join(root_dir, csv_name)
             assert os.path.exists(csv_fp)
         else:
-            csv_name = "train.csv" if is_train else "validation.csv"
-            csv_fp = os.path.join(root_dir, csv_name)
-            assert os.path.exists(csv_fp)
+            
+            if not is_2018:
+                csv_name = "train.csv" if is_train else "validation.csv"
+                csv_fp = os.path.join(root_dir, csv_name)
+            else:
+                csv_name = "train2018.csv" if is_train else "val2018.csv"
+                csv_fp = os.path.join(root_dir, csv_name)
+            assert os.path.exists(csv_fp) 
 
         self.csv = pd.read_csv(csv_fp)
         self.transform = transform

@@ -187,9 +187,6 @@ def display_info(config, accelerator, trainset, valset, model):
         f"[info] ----- Project: {colored(config['project'], color='red')}"
     )
     accelerator.print(
-        f"[info] ----- Group: {colored(config['wandb_parameters']['group'], color='red')}"
-    )
-    accelerator.print(
         f"[info] ----- Name: {colored(config['wandb_parameters']['name'], color='red')}"
     )
     accelerator.print(

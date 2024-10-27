@@ -56,6 +56,7 @@ class ConvertToMultiChannelBasedOnBrats2017Classes(object):
             img = img.squeeze(0)
 
         result = [(img == 2) | (img == 3), (img == 2) | (img == 3) | (img == 1), img == 3]
+        
         # merge labels 1 (tumor non-enh) and 3 (tumor enh) and 1 (large edema) to WT
         # label 3 is ET
         return torch.stack(result, dim=0) if isinstance(img, torch.Tensor) else np.stack(result, axis=0)
@@ -65,17 +66,24 @@ class Brats2017Task1Preprocess:
         self,
         root_dir: str,
         train_folder_name: str = "train",
-        save_dir: str = "../BraTS2017_Training_Data",
+        save_dir: str = "/home/scanar/BCV_project/canar_tobon_brats2018/SegFormer3D/data/brats2017_seg/BraTS2017_Training_Data",
     ):
         """
         root_dir: path to the data folder where the raw train folder is
-        roi: spatiotemporal size of the 3D volume to be resized
         train_folder_name: name of the folder of the training data
         save_dir: path to directory where each case is going to be saved as a single file containing four modalities
         """
 
         self.train_folder_dir = os.path.join(root_dir, train_folder_name)
         label_folder_dir = os.path.join(root_dir, train_folder_name, "labelsTr")
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+            print('Creating the save directory:{}'.format(save_dir))
+        if not os.path.exists(label_folder_dir):
+            os.makedirs(label_folder_dir)
+            print('Creating the label folder:{}'.format(label_folder_dir))
+            
+        print(f'Checking the existence of the train folder and label folder...')
         assert os.path.exists(self.train_folder_dir)
         assert os.path.exists(label_folder_dir)
         
@@ -303,9 +311,9 @@ def viz(volume_indx: int = 1, label_indx: int = 1)->None:
 
 
 if __name__ == "__main__":
-    brats2017_task1_prep = Brats2017Task1Preprocess(root_dir="./",
+    brats2017_task1_prep = Brats2017Task1Preprocess(root_dir="/home/scanar/BCV_project/canar_tobon_brats2018/SegFormer3D/data/brats2017_seg/brats2017_raw_data",
     	train_folder_name = "train",
-        save_dir="../BraTS2017_Training_Data"
+        save_dir="/home/scanar/BCV_project/canar_tobon_brats2018/SegFormer3D/data/brats2017_seg/BraTS2017_Training_Data"
     )
     # run the preprocessing pipeline 
     brats2017_task1_prep()

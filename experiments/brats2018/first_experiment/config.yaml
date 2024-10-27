@@ -1,12 +1,11 @@
+# Config File
 # wandb parameters
-project: segfmr3d
+project: 3d-segmentation
 wandb_parameters:
-  mode: "offline" # set this to "online" if you want to log to wandb
-  entity: pcvlab
-  group: brats2017
-  name: segformer3d_adamw_batch2_diceloss
+  name: segformer_run_2018
+  mode: "online"
   resume: False
-  tags: ["pcvlab", "dice", "b0_model", "adamw"]
+  #tags: ["pcvlab", "dice", "compicated_aug", "b0_model", "layerNorminEncoderandDecoder"]
 
 # model parameters
 model_name: segformer3d
@@ -48,7 +47,7 @@ train_scheduler:
     t_mult: 1
     min_lr: 0.000006
 
-# (Not fully implemented yet) eponential moving average
+# eponential moving average
 ema:
   enabled: False
   ema_decay: 0.999
@@ -66,7 +65,7 @@ clip_gradients:
 # training hyperparameters
 training_parameters:
   seed: 42
-  num_epochs: 800
+  num_epochs: 100
   cutoff_epoch: 400
   load_optimizer: False
   print_every: 200
@@ -80,35 +79,25 @@ training_parameters:
 
 # dataset args
 dataset_parameters:
-  dataset_type: "brats2017_seg"
+  dataset_type: "brats2018_seg"
   train_dataset_args:
     root: "../../../data/brats2017_seg"
     train: True
-    # in case you have k-fold train and validation csv 
     fold_id: null
-    # for example fold_id: 1 will load train_fold_1.csv
-    # default fold_id is null which load train.csv
-    # browse to ../../../data/brats2017_seg/brats2017_raw_data/datameta_generator to access to the csv files 
-    # and put it under ../../../data/brats2017_seg and change the fold_id accrodingly
 
   val_dataset_args:
     root: "../../../data/brats2017_seg"
     train: False
-    # in case you have k-fold train and validation csv
     fold_id: null
-    # for example fold_id: 1 will load validation_fold_1.csv
-    # default fold_id is null which load validation.csv
-    # browse to ../../../data/brats2017_seg/brats2017_raw_data/datameta_generator to access to the csv files 
-    # and put it under ../../../data/brats2017_seg and change the fold_id accrodingly
 
   train_dataloader_args:
-    batch_size: 2 
+    batch_size: 4 
     shuffle: True
     num_workers: 8
     drop_last: True
 
   val_dataloader_args:
-    batch_size: 1
+    batch_size: 2
     shuffle: False
     num_workers: 6
     drop_last: False

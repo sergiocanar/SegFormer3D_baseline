@@ -27,8 +27,22 @@ def build_dataset(dataset_type: str, dataset_args: Dict):
             is_train=dataset_args["train"],
             transform=build_augmentations(dataset_args["train"]),
             fold_id=dataset_args["fold_id"],
+            is_2018=False
         )
         return dataset
+
+    elif dataset_type == "brats2018_seg":
+        from .brats2017_seg import Brats2017Task1Dataset
+
+        dataset = Brats2017Task1Dataset(
+            root_dir=dataset_args["root"],
+            is_train=dataset_args["train"],
+            transform=build_augmentations(dataset_args["train"]),
+            fold_id=dataset_args["fold_id"],
+            is_2018=True
+        )
+        return dataset
+    
     else:
         raise ValueError(
             "only brats2021 and brats2017 segmentation is currently supported!"
