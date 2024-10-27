@@ -80,7 +80,7 @@ def save_biggest_area_img(vol_og, vol_gt, vol_pred, max_slice, save_path):
     
     '''
     # Define the colors for each label (0: background, 1: non-enhancing, 2: whole tumor, 3: enhancing tumor)
-    colors = [(0, 0, 0), (255, 0, 0), (255, 255, 0), (0, 255, 255)]  # RGB values
+    colors = [(0, 0, 0),  (255, 255, 0), (255, 0, 0),(0, 255, 255)]  # RGB values: black, yellow, red, cyan
 
     cmap = mcolors.ListedColormap(np.array(colors) / 255.0)
 
@@ -124,7 +124,7 @@ def save_animation(vol_og, vol_gt, vol_pred, save_path):
     '''
 
     # Define the colors for each label (0: background, 1: non-enhancing, 2: whole tumor, 3: enhancing tumor)
-    colors = [(0, 0, 0), (255, 0, 0), (255, 255, 0), (0, 255, 255)]  # RGB values
+    colors = [(0, 0, 0),  (255, 255, 0), (255, 0, 0),(0, 255, 255)]  # RGB values: black, yellow, red, cyan
     cmap = mcolors.ListedColormap(np.array(colors) / 255.0)  # Normalize to [0,1] for matplotlib
 
     # Get the number of slices (assumes all volumes have the same shape)
