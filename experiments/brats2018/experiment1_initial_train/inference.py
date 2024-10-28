@@ -148,6 +148,10 @@ def save_animation(vol_og, vol_gt, vol_pred, save_path):
         # Display the predicted segmentation with the custom colormap and alpha 0.5
         pred_img = axes[2].imshow(vol_pred[:, :, i], cmap=cmap, alpha=0.5)
         axes[2].set_title('Predicted')
+        
+        axes[0].axis('off')
+        axes[1].axis('off')
+        axes[2].axis('off')
 
     # Create the animation
     ani = animation.FuncAnimation(fig, update, frames=num_slices, repeat=True)
@@ -231,9 +235,10 @@ with tqdm(total=len(val_paths)) as pbar:
         # ---------------------------- #
         
         # Define the post-transforms for the predictions
-        post_transform = Compose(
+        post_transform = Compose([
             Activations(sigmoid=True), # Sigmoid activation to the model output
             AsDiscrete(argmax=False, threshold=0.5) # Thresholding the output
+            ] 
         )
 
         # Get the predicted segmentation using sliding window inference from MONAI

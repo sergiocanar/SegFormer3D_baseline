@@ -148,6 +148,10 @@ def save_animation(vol_og, vol_gt, vol_pred, save_path):
         # Display the predicted segmentation with the custom colormap and alpha 0.5
         pred_img = axes[2].imshow(vol_pred[:, :, i], cmap=cmap, alpha=0.5)
         axes[2].set_title('Predicted')
+        
+        axes[0].axis('off')
+        axes[1].axis('off')
+        axes[2].axis('off')
 
     # Create the animation
     ani = animation.FuncAnimation(fig, update, frames=num_slices, repeat=True)
