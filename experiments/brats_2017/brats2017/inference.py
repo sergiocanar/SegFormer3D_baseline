@@ -235,10 +235,12 @@ with tqdm(total=len(val_paths)) as pbar:
         # ---------------------------- #
         
         # Define the post-transforms for the predictions
-        post_transform = Compose(
+        post_transform = Compose([
             Activations(sigmoid=True), # Sigmoid activation to the model output
-            AsDiscrete(argmax=False, threshold=0.5) # Thresholding the output
+            AsDiscrete(argmax=False, threshold=0.5) # Thresholding the output]
+            ]
         )
+        
 
         # Get the predicted segmentation using sliding window inference from MONAI
 
