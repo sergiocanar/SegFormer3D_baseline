@@ -50,21 +50,20 @@ sweep_config = {
         "decoder_dropout": {
             "values": [0.0, 0.1, 0.2]
         },
-        "optimizer_args": {
-            "lr": {
-                "values": [0.0001, 0.0005, 0.00001]
-            },
-            "weight_decay": {
-                "values": [0.01, 0.001, 0.0001]
-            }
+        # Flatten optimizer_args
+        "lr": {
+            "values": [0.0001, 0.0005, 0.00001]
         },
-        "scheduler_args": {
-            "min_lr": {
-                "values": [0.000006, 0.00001, 0.000005]
-            }
+        "weight_decay": {
+            "values": [0.01, 0.001, 0.0001]
+        },
+        # Flatten scheduler_args
+        "min_lr": {
+            "values": [0.000006, 0.00001, 0.000005]
         }
     }
 }
+
 
 
 
@@ -78,7 +77,6 @@ def launch_experiment(config_path) -> Dict:
     Returns:
         Dict: _description_
     """
-    
     
     # load config
     config = load_config(config_path)
@@ -190,6 +188,40 @@ def launch_experiment(config_path) -> Dict:
     # run train
     trainer.train()
 
+def sweep_train(sweep_dict):
+    with wandb.init() as run:
+        config = run.config
+        config.update(sweep_dict)
+        launch_experiment(config)
+
+def launch_exp_with_sweep(config_path, sweep_dict) -> Dict:
+    """
+    Initialize and run a sweep experiment with W&B based on the configuration.
+    
+    Args:
+        config_path (str): Path to the YAML config file.
+        sweep_dict (Dict): Sweep configuration dictionary.
+
+    Returns:
+        Dict: A dictionary with sweep and run information.
+    """
+    # Load the configuration from the YAML file
+    config = load_config(config_path)
+    
+    # Initialize the W&B sweep
+    sweep_id = wandb.sweep(sweep_dict, project=config["project"])
+
+    # Define the sweep function
+    def sweep_train_wrapper():
+        with wandb.init() as run:
+            config.update(run.config)
+            launch_experiment(config_path)
+
+    # Run the sweep with the specified sweep ID and function
+    wandb.agent(sweep_id, function=sweep_train_wrapper)
+
+    # Return the sweep ID for reference
+    return {"sweep_id": sweep_id}
 
 ##################################################################################################
 def seed_everything(config) -> None:
@@ -202,7 +234,6 @@ def seed_everything(config) -> None:
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-
 
 ##################################################################################################
 def load_config(config_path: str) -> Dict:
@@ -218,7 +249,6 @@ def load_config(config_path: str) -> Dict:
         config = yaml.safe_load(file)
     return config
 
-
 ##################################################################################################
 def build_directories(config: Dict) -> None:
     # create necessary directories
@@ -226,8 +256,7 @@ def build_directories(config: Dict) -> None:
         os.makedirs(config["training_parameters"]["checkpoint_save_dir"])
 
     if os.listdir(config["training_parameters"]["checkpoint_save_dir"]):
-        raise ValueError("checkpoint exits -- preventing file override -- rename file")
-
+        raise ValueError("checkpoint exists -- preventing file override -- rename file")
 
 ##################################################################################################
 def display_info(config, accelerator, trainset, valset, model):
@@ -261,28 +290,22 @@ def display_info(config, accelerator, trainset, valset, model):
 
     pytorch_total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     accelerator.print(
-        f"[info] ----- Distributed Training: {colored('True' if torch.cuda.device_count() > 1 else 'False', color='red')}"
-    )
-    accelerator.print(
-        f"[info] ----- Num Clases: {colored(config['model_parameters']['num_classes'], color='red')}"
-    )
-    accelerator.print(
-        f"[info] ----- EMA: {colored(config['ema']['enabled'], color='red')}"
-    )
-    accelerator.print(
-        f"[info] ----- Load From Checkpoint: {colored(config['training_parameters']['load_checkpoint']['load_full_checkpoint'], color='red')}"
-    )
-    accelerator.print(
-        f"[info] ----- Params: {colored(pytorch_total_params, color='red')}"
+        f"[info] ----- Num of Learnable Parameters: {colored(pytorch_total_params, color='red')}"
     )
     accelerator.print(f"-------------------------------------------------------")
 
-
 ##################################################################################################
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Simple example of training script.")
-    parser.add_argument(
-        "--config", type=str, default="config.yaml", help="path to yaml config file"
-    )
+    parser = argparse.ArgumentParser(description="Experiment Launcher")
+    parser.add_argument("--config", required=True, type=str, help="Path to config file")
+    parser.add_argument("--sweep", action="store_true", help="Run with sweep configuration")
     args = parser.parse_args()
-    launch_experiment(args.config)
+
+    config_path = args.config
+
+    if args.sweep:
+        # Launch experiment with sweep
+        launch_exp_with_sweep(config_path, sweep_config)
+    else:
+        # Launch standard experiment
+        launch_experiment(config_path)
