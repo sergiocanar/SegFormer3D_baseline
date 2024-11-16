@@ -192,6 +192,9 @@ def sweep_train(sweep_dict):
     with wandb.init() as run:
         config = run.config
         config.update(sweep_dict)
+        
+        build_directories(config)
+        
         launch_experiment(config)
 
 def launch_exp_with_sweep(config_path, sweep_dict) -> Dict:
@@ -251,12 +254,24 @@ def load_config(config_path: str) -> Dict:
 
 ##################################################################################################
 def build_directories(config: Dict) -> None:
-    # create necessary directories
-    if not os.path.exists(config["training_parameters"]["checkpoint_save_dir"]):
-        os.makedirs(config["training_parameters"]["checkpoint_save_dir"])
+    """
+    Create necessary directories, ensuring a unique checkpoint path for each run.
 
-    if os.listdir(config["training_parameters"]["checkpoint_save_dir"]):
-        raise ValueError("checkpoint exists -- preventing file override -- rename file")
+    Args:
+        config (Dict): Configuration dictionary.
+    """
+    # Use W&B run ID to create a unique folder if W&B is initialized
+    run_id = wandb.run.id if wandb.run else "default_run"
+    checkpoint_dir = os.path.join(config["training_parameters"]["checkpoint_save_dir"], run_id)
+    
+    # Update config with the dynamic checkpoint directory
+    config["training_parameters"]["checkpoint_save_dir"] = checkpoint_dir
+
+    # Create the directory if it doesn't exist
+    os.makedirs(checkpoint_dir, exist_ok=True)
+
+    print(f"[info] Checkpoint directory created: {checkpoint_dir}")
+
 
 ##################################################################################################
 def display_info(config, accelerator, trainset, valset, model):

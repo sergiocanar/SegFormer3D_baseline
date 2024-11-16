@@ -1,6 +1,5 @@
 import os
 import torch
-import evaluate
 from tqdm import tqdm
 from typing import Dict
 from copy import deepcopy
@@ -10,6 +9,8 @@ import monai
 from metrics.segmentation_metrics import SlidingWindowInference
 import kornia
 
+#################################################################################################
+os.environ["WANDB_AGENT_MAX_INITIAL_FAILURES"] = "10"
 
 #################################################################################################
 class Segmentation_Trainer:
@@ -440,7 +441,7 @@ class Segmentation_Trainer:
         Runs a full training and validation of the dataset.
         """
         self._run_train_val()
-        self.accelerator.end_traninig()
+        self.accelerator.end_training()
 
     def evaluate(self) -> None:
         raise NotImplementedError("evaluate function is not implemented yet")
@@ -837,7 +838,7 @@ class AutoEncoder_Trainer:
         Runs a full training and validation of the dataset.
         """
         self._run_train_val()
-        self.accelerator.end_traninig()
+        self.accelerator.end_training()
 
     def evaluate(self) -> None:
         pass
