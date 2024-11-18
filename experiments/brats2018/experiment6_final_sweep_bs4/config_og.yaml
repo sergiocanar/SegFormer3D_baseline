@@ -2,7 +2,7 @@
 # wandb parameters
 project: 3d-segmentation
 wandb_parameters:
-  name: segformer_run_2018
+  name: segformer_test
   mode: "online"
   resume: False
   #tags: ["pcvlab", "dice", "compicated_aug", "b0_model", "layerNorminEncoderandDecoder"]
@@ -65,10 +65,10 @@ clip_gradients:
 # training hyperparameters
 training_parameters:
   seed: 42
-  num_epochs: 200
+  num_epochs: 800
   cutoff_epoch: 400
   load_optimizer: False
-  print_every: 50
+  print_every: 200
   calculate_metrics: True
   grad_accumulate_steps: 1 # default: 1
   checkpoint_save_dir: "model_checkpoints/best_dice_checkpoint"
@@ -79,7 +79,7 @@ training_parameters:
 
 # dataset args
 dataset_parameters:
-  dataset_type: "brats2018_seg"
+  dataset_type: "brats2017_seg"
   train_dataset_args:
     root: "../../../data/brats2017_seg"
     train: True
@@ -91,7 +91,7 @@ dataset_parameters:
     fold_id: null
 
   train_dataloader_args:
-    batch_size: 6 
+    batch_size: 4 
     shuffle: True
     num_workers: 8
     drop_last: True
