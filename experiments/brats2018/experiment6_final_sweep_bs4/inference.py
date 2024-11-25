@@ -17,6 +17,7 @@ from monai.inferers import sliding_window_inference
 from monai.transforms import Compose
 from monai.transforms import Activations
 from monai.transforms import AsDiscrete
+from monai.metrics import DiceMetric
 
 sys.path.append("../../../")
 
@@ -158,6 +159,16 @@ def save_animation(vol_og, vol_gt, vol_pred, save_path):
     plt.close(fig)  
     
 
+def dice_score_per_class(pred, true, class_index):
+    pred_binary = (pred == class_index).astype(int)
+    true_binary = (true == class_index).astype(int)
+    intersection = (pred_binary * true_binary).sum()
+    union = pred_binary.sum() + true_binary.sum()
+    if union == 0:
+        return 1.0  # Handle empty masks
+    return 2.0 * intersection / union
+
+
 
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -169,7 +180,7 @@ grandparent_dir = os.path.dirname(parent_dir)
 grand_grandparent_dir = os.path.dirname(grandparent_dir)
 
 config_path = os.path.join(this_file_dir, "config.yaml")
-weights2_path = os.path.join(this_file_dir, 'model_checkpoints', 'best_dice_checkpoint', 'pytorch_model.bin')
+weights2_path = '/home/scanar/BCV_project/SegFormer3D_baseline/experiments/brats2018/experiment6_final_sweep_bs4/model_checkpoints/best_dice_checkpoint/79ctfnn7/pytorch_model.bin'
 
 # Model configuration
 model_config = load_config(config_path)
@@ -274,6 +285,8 @@ with tqdm(total=len(val_paths)) as pbar:
         final_pred_vol = np.sum([class1_vol, class2_vol, class3_vol], axis=0)
 
         final_pred_vol = final_pred_vol.astype(np.uint8)
+        final_pred_tensor = torch.from_numpy(final_pred_vol).to(device)
+        final_pred_tensor = final_pred_tensor.unsqueeze(0) #Add a batch dimension to the final prediction tensor
         #-----------------------------#
         
         # Label volume creation
@@ -284,7 +297,8 @@ with tqdm(total=len(val_paths)) as pbar:
         label1_np, label2_np, label3_np = label_tensor #Split the label volume into the 3 classes
         
         gt_final_vol = np.sum([label1_np, label2_np, label3_np], axis=0)
-
+        gt_final_tensor = torch.from_numpy(gt_final_vol).to(device)
+        gt_final_tensor = gt_final_tensor.unsqueeze(0)
         #-----------------------------#
         
         # Extract a channel from the input tensor for visualization
@@ -307,8 +321,17 @@ with tqdm(total=len(val_paths)) as pbar:
         save_biggest_area_img(input_np_channel, gt_final_vol, final_pred_vol, max_slice, save_img_path)
         save_animation(input_np_channel, gt_final_vol, final_pred_vol, save_animation_path)
         np.save(save_np_path, final_pred_vol)
+        dice_class1 = dice_score_per_class(final_pred_vol, gt_final_vol, 1)
+        dice_class2 = dice_score_per_class(final_pred_vol, gt_final_vol, 2)
+        dice_class3 = dice_score_per_class(final_pred_vol, gt_final_vol, 3)
         
+        mean_dice = (dice_class1 + dice_class2 + dice_class3) / 3
+        
+        print(f"Case: {val_case_i} with Max area: {max_area} and Mean Dice: {mean_dice}")
+        print(f"Dice for class 1: {dice_class1}")
+        print(f"Dice for class 2: {dice_class2}")
+        print(f"Dice for class 3: {dice_class3}")
         
         pbar.set_description(f"Case: {val_case_i} with Max area: {max_area}")
         pbar.update(1)
-        
+    
