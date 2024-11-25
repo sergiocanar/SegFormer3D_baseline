@@ -201,6 +201,37 @@ def post_process(pred_vol, out_path, type_of_post_processing="closing"):
     
     return pred_vol
 
+def postProcessVolume(data):
+    masks = np.zeros_like(data)
+
+    for floor in range(len(data)):
+        unique_values = np.unique(data[floor])
+        if len(unique_values) <= 1:
+            # Skip floors with no meaningful data
+            continue
+        
+        for i in unique_values[1:]:  # Skip background value
+            try:
+                binary_mask = (data[floor] == i)
+                labeled, num_features = label(binary_mask)
+
+                if labeled.size == 0:
+                    print(f"Warning: Labeled array is empty for floor {floor}, value {i}")
+                    continue
+
+                labels, counts = np.unique(labeled, return_counts=True)
+                for j, labelNum in enumerate(labels):
+                    if counts[j] < 20:
+                        # Define what to fill where there are holes
+                        labeled[labeled == labelNum] = 0  # Fill holes with background value
+                
+                masks[floor][labeled != 0] = i
+            except Exception as e:
+                print(f"Error processing floor {floor}, value {i}: {e}")
+                continue
+
+    return masks
+
 def remove_small_regions(volume, min_size=100):
     labeled_array, num_features = label(volume)
     for i in range(1, num_features + 1):
@@ -232,11 +263,11 @@ if __name__ == "__main__":
     first_pred = load_volume(predictions_dict[keys[0]])
     first_gt = load_volume(gt_dict[keys[0]])
     
-    post_process_dir = os.path.join(this_dir, "post_processed_opening ")
+    post_process_dir = os.path.join(this_dir, "post_processed_Sergio ")
     if not os.path.exists(post_process_dir):
         os.makedirs(post_process_dir)
     
-    txt_path = os.path.join(post_process_dir, "post_process_results_opening.txt")
+    txt_path = os.path.join(post_process_dir, "post_process_results_Sergio.txt")
     
     lt_dice = []
     lt_dice_class_1 = []
@@ -259,7 +290,8 @@ if __name__ == "__main__":
                     os.makedirs(save_animation_dir)
                 
                 post_processed_vol_path = os.path.join(save_animation_dir, f"{key}_processed.npy")
-                post_processed_vol = post_process(pred_vol, post_processed_vol_path, type_of_post_processing="closing")
+                # post_processed_vol = post_process(pred_vol, post_processed_vol_path, type_of_post_processing="closing")
+                post_processed_vol = postProcessVolume(pred_vol)
                 dict_post_processed[key] = post_processed_vol
                 
                 label_vol = load_volume(gt_dict[key])
