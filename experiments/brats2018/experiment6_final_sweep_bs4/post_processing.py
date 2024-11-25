@@ -5,11 +5,51 @@ from scipy.ndimage import label
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import matplotlib.animation as animation
-
+from skimage.morphology import closing, ball, remove_small_objects, opening
 
 
 def load_volume(file_path):
     return np.load(file_path)
+
+def apply_closing(volume, radius=6):
+    '''
+    Apply morphological closing to a 3D volume
+    -----------------------------------------------
+    Parameters:
+    - volume: 3D numpy array
+    - radius: int
+    -----------------------------------------------
+    Returns:
+    - closed_volume: 3D numpy array
+    
+    '''
+    # Create a ball-shaped structuring element
+    selem = ball(radius)
+    
+    # Apply morphological closing
+    closed_volume = closing(volume, selem)
+    
+    return closed_volume
+
+def apply_opening(volume, radius=6):
+    '''
+    Apply morphological opening to a 3D volume
+    -----------------------------------------------
+    Parameters:
+    - volume: 3D numpy array
+    - radius: int
+    -----------------------------------------------
+    Returns:
+    - opened_volume: 3D numpy array
+    
+    '''
+    # Create a ball-shaped structuring element
+    selem = ball(radius)
+    
+    # Apply morphological opening
+    opened_volume = opening(volume, selem)
+    
+    return opened_volume
 
 def get_max_slice(vol):
     '''
@@ -140,16 +180,23 @@ def dice_score_per_class(pred, true, class_index):
         return 1.0  # Handle empty masks
     return 2.0 * intersection / union
 
-def post_process(pred_vol, out_path):
-                
+def post_process(pred_vol, out_path, type_of_post_processing="closing"):
+    
+    if type_of_post_processing == "closing":
+        # Apply morphological closing
+        pred_vol = apply_closing(pred_vol)
+    elif type_of_post_processing == "remove_small_regions":
+        # Remove small isolated regions
+        pred_vol = remove_small_regions(pred_vol)
+    
     # Apply post-processing steps
     # Example: Remove small isolated regions
-    processed_volume = remove_small_regions(pred_vol)
+    pred_vol = remove_small_regions(pred_vol)
     
     # Save the processed volume
-    np.save(out_path, processed_volume)
+    np.save(out_path, pred_vol)
     
-    return processed_volume
+    return pred_vol
 
 def remove_small_regions(volume, min_size=100):
     labeled_array, num_features = label(volume)
@@ -182,11 +229,11 @@ if __name__ == "__main__":
     first_pred = load_volume(predictions_dict[keys[0]])
     first_gt = load_volume(gt_dict[keys[0]])
     
-    post_process_dir = os.path.join(this_dir, "post_processed")
+    post_process_dir = os.path.join(this_dir, "post_processed_closing")
     if not os.path.exists(post_process_dir):
         os.makedirs(post_process_dir)
     
-    txt_path = os.path.join(post_process_dir, "post_process_results.txt")
+    txt_path = os.path.join(post_process_dir, "post_process_results_closing.txt")
     
     lt_dice = []
     lt_dice_class_1 = []
@@ -209,7 +256,7 @@ if __name__ == "__main__":
                     os.makedirs(save_animation_dir)
                 
                 post_processed_vol_path = os.path.join(save_animation_dir, f"{key}_processed.npy")
-                post_processed_vol = post_process(pred_vol, post_processed_vol_path)
+                post_processed_vol = post_process(pred_vol, post_processed_vol_path, type_of_post_processing="closing")
                 dict_post_processed[key] = post_processed_vol
                 
                 label_vol = load_volume(gt_dict[key])
