@@ -188,6 +188,9 @@ def post_process(pred_vol, out_path, type_of_post_processing="closing"):
     elif type_of_post_processing == "remove_small_regions":
         # Remove small isolated regions
         pred_vol = remove_small_regions(pred_vol)
+        
+    elif type_of_post_processing == "opening":
+        pred_vol = apply_opening(pred_vol)
     
     # Apply post-processing steps
     # Example: Remove small isolated regions
@@ -229,11 +232,11 @@ if __name__ == "__main__":
     first_pred = load_volume(predictions_dict[keys[0]])
     first_gt = load_volume(gt_dict[keys[0]])
     
-    post_process_dir = os.path.join(this_dir, "post_processed_closing")
+    post_process_dir = os.path.join(this_dir, "post_processed_opening ")
     if not os.path.exists(post_process_dir):
         os.makedirs(post_process_dir)
     
-    txt_path = os.path.join(post_process_dir, "post_process_results_closing.txt")
+    txt_path = os.path.join(post_process_dir, "post_process_results_opening.txt")
     
     lt_dice = []
     lt_dice_class_1 = []
