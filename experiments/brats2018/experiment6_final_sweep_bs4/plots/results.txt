@@ -1,0 +1,206 @@
+Results
+Case: Brats18_2013_23_1 with Max area: 7839 and Mean Dice: 0.7117322364481886
+Dice for class 1: 0.6057863947261448
+Dice for class 2: 0.7747436693798856
+Dice for class 3: 0.7546666452385353
+
+Case: Brats18_CBICA_AAB_1 with Max area: 6740 and Mean Dice: 0.807361068906721
+Dice for class 1: 0.8596732772846667
+Dice for class 2: 0.7360095041580692
+Dice for class 3: 0.8264004252774271
+
+Case: Brats18_CBICA_ABE_1 with Max area: 7114 and Mean Dice: 0.74751308727827
+Dice for class 1: 0.8761524590251655
+Dice for class 2: 0.6165405102326885
+Dice for class 3: 0.7498462925769562
+
+Case: Brats18_CBICA_ABM_1 with Max area: 2258 and Mean Dice: 0.7797733386000836
+Dice for class 1: 0.8197078023002797
+Dice for class 2: 0.7074317968015051
+Dice for class 3: 0.812180416698466
+
+Case: Brats18_CBICA_ABY_1 with Max area: 3057 and Mean Dice: 0.5949645047876715
+Dice for class 1: 0.7200102449473782
+Dice for class 2: 0.23580034423407917
+Dice for class 3: 0.8290829251815571
+
+Case: Brats18_CBICA_APZ_1 with Max area: 4362 and Mean Dice: 0.7000255902547243
+Dice for class 1: 0.6577095788256595
+Dice for class 2: 0.6768134385339781
+Dice for class 3: 0.7655537534045354
+
+Case: Brats18_CBICA_ASE_1 with Max area: 1323 and Mean Dice: 0.33468427207138535
+Dice for class 1: 0.4821471749818651
+Dice for class 2: 0.03091684434968017
+Dice for class 3: 0.4909887968826108
+
+Case: Brats18_CBICA_ASV_1 with Max area: 4802 and Mean Dice: 0.7635904223703917
+Dice for class 1: 0.9173673689554512
+Dice for class 2: 0.6169709773150244
+Dice for class 3: 0.7564329208406992
+
+Case: Brats18_CBICA_ATF_1 with Max area: 3029 and Mean Dice: 0.3703102730395548
+Dice for class 1: 0.6658467009965546
+Dice for class 2: 0.021379703534777653
+Dice for class 3: 0.42370441458733205
+
+Case: Brats18_CBICA_AWG_1 with Max area: 3406 and Mean Dice: 0.7391260754048349
+Dice for class 1: 0.7656604223839637
+Dice for class 2: 0.7214159497117697
+Dice for class 3: 0.7303018541187711
+
+Case: Brats18_CBICA_AXQ_1 with Max area: 2996 and Mean Dice: 0.6441201452692047
+Dice for class 1: 0.8286838804549976
+Dice for class 2: 0.43757320215507145
+Dice for class 3: 0.6661033531975451
+
+Case: Brats18_TCIA01_147_1 with Max area: 7804 and Mean Dice: 0.7499924121077219
+Dice for class 1: 0.892150311973574
+Dice for class 2: 0.5116491548652353
+Dice for class 3: 0.8461777694843565
+
+Case: Brats18_TCIA01_180_1 with Max area: 7296 and Mean Dice: 0.5987940058524633
+Dice for class 1: 0.43065746991488113
+Dice for class 2: 0.7082261498642562
+Dice for class 3: 0.6574983977782525
+
+Case: Brats18_TCIA01_429_1 with Max area: 5424 and Mean Dice: 0.8475424224858942
+Dice for class 1: 0.8854419827636261
+Dice for class 2: 0.7482975879844714
+Dice for class 3: 0.9088876967095851
+
+Case: Brats18_TCIA01_448_1 with Max area: 4179 and Mean Dice: 0.68516292156361
+Dice for class 1: 0.7999857056069757
+Dice for class 2: 0.43375277572168763
+Dice for class 3: 0.8217502833621667
+
+Case: Brats18_TCIA01_460_1 with Max area: 5878 and Mean Dice: 0.6303084899288713
+Dice for class 1: 0.5329137516544664
+Dice for class 2: 0.724838594684517
+Dice for class 3: 0.6331731234476308
+
+Case: Brats18_TCIA01_499_1 with Max area: 4702 and Mean Dice: 0.7686647052384759
+Dice for class 1: 0.5804372530063264
+Dice for class 2: 0.8383985063790064
+Dice for class 3: 0.8871583563300949
+
+Case: Brats18_TCIA02_314_1 with Max area: 7335 and Mean Dice: 0.6942189120993638
+Dice for class 1: 0.617952014225127
+Dice for class 2: 0.6373072186712015
+Dice for class 3: 0.827397503401763
+
+Case: Brats18_TCIA02_374_1 with Max area: 6921 and Mean Dice: 0.8120361305405283
+Dice for class 1: 0.8187688765038629
+Dice for class 2: 0.7438831191691604
+Dice for class 3: 0.8734563959485613
+
+Case: Brats18_TCIA02_473_1 with Max area: 1975 and Mean Dice: 0.501024094603206
+Dice for class 1: 0.6592429063047854
+Dice for class 2: 0.005604483586869495
+Dice for class 3: 0.8382248939179632
+
+Case: Brats18_TCIA03_257_1 with Max area: 3958 and Mean Dice: 0.6632241697292273
+Dice for class 1: 0.7926358403145036
+Dice for class 2: 0.5311666262430269
+Dice for class 3: 0.6658700426301511
+
+Case: Brats18_TCIA03_265_1 with Max area: 2868 and Mean Dice: 0.6545299692591157
+Dice for class 1: 0.49455181738646303
+Dice for class 2: 0.7707584641573672
+Dice for class 3: 0.6982796262335167
+
+Case: Brats18_TCIA03_419_1 with Max area: 8492 and Mean Dice: 0.8528622282431083
+Dice for class 1: 0.8245132085903351
+Dice for class 2: 0.8522740002240394
+Dice for class 3: 0.8817994759149504
+
+Case: Brats18_TCIA04_149_1 with Max area: 6455 and Mean Dice: 0.6276236155502471
+Dice for class 1: 0.5815756079157663
+Dice for class 2: 0.42497398543184184
+Dice for class 3: 0.8763212533031333
+
+Case: Brats18_TCIA05_277_1 with Max area: 3593 and Mean Dice: 0.18255954620302076
+Dice for class 1: 0.5243694233411017
+Dice for class 2: 6.566419331538512e-05
+Dice for class 3: 0.023243551074645125
+
+Case: Brats18_TCIA05_444_1 with Max area: 6220 and Mean Dice: 0.7451689292245446
+Dice for class 1: 0.6175357946655174
+Dice for class 2: 0.8800154203569001
+Dice for class 3: 0.7379555726512165
+
+Case: Brats18_TCIA05_478_1 with Max area: 7439 and Mean Dice: 0.8457709534765963
+Dice for class 1: 0.8393058458420419
+Dice for class 2: 0.8707605593985493
+Dice for class 3: 0.8272464551891974
+
+Case: Brats18_TCIA06_603_1 with Max area: 6583 and Mean Dice: 0.7889945795417338
+Dice for class 1: 0.8811794871794871
+Dice for class 2: 0.7925754437268998
+Dice for class 3: 0.6932288077188146
+
+Case: Brats18_TCIA08_205_1 with Max area: 9373 and Mean Dice: 0.6107132068893762
+Dice for class 1: 0.49864680489386926
+Dice for class 2: 0.6244790032716354
+Dice for class 3: 0.709013812502624
+
+Case: Brats18_TCIA09_255_1 with Max area: 8592 and Mean Dice: 0.5063915038576011
+Dice for class 1: 0.556002078820218
+Dice for class 2: 0.7873011190796629
+Dice for class 3: 0.17587131367292225
+
+Case: Brats18_TCIA09_428_1 with Max area: 2323 and Mean Dice: 0.4118539955535165
+Dice for class 1: 0.6509546294395402
+Dice for class 2: 0.015851510635415254
+Dice for class 3: 0.568755846585594
+
+Case: Brats18_TCIA10_325_1 with Max area: 6867 and Mean Dice: 0.43468196578130264
+Dice for class 1: 0.49797950642228317
+Dice for class 2: 0.8060663909216248
+Dice for class 3: 0.0
+
+Case: Brats18_TCIA10_413_1 with Max area: 1893 and Mean Dice: 0.38826332147334863
+Dice for class 1: 0.37184896389660327
+Dice for class 2: 0.7929410005234427
+Dice for class 3: 0.0
+
+Case: Brats18_TCIA10_628_1 with Max area: 6195 and Mean Dice: 0.5246049451074478
+Dice for class 1: 0.37002249348253696
+Dice for class 2: 0.6640606596932637
+Dice for class 3: 0.5397316821465429
+
+Case: Brats18_TCIA12_470_1 with Max area: 2046 and Mean Dice: 0.6265431169947783
+Dice for class 1: 0.7547604477880566
+Dice for class 2: 0.44497004099653104
+Dice for class 3: 0.6798988621997472
+
+Case: Brats18_TCIA12_480_1 with Max area: 6996 and Mean Dice: 0.5260836750146383
+Dice for class 1: 0.5263178232168733
+Dice for class 2: 0.7197473154242876
+Dice for class 3: 0.33218588640275387
+
+Case: Brats18_TCIA13_624_1 with Max area: 4961 and Mean Dice: 0.6432217450654666
+Dice for class 1: 0.9283224753305196
+Dice for class 2: 0.13607699966810488
+Dice for class 3: 0.865265760197775
+
+Case: Brats18_TCIA13_633_1 with Max area: 10071 and Mean Dice: 0.5346799872306215
+Dice for class 1: 0.5432933257217305
+Dice for class 2: 0.7585636582904679
+Dice for class 3: 0.3021829776796664
+
+Case: Brats18_TCIA13_634_1 with Max area: 5497 and Mean Dice: 0.4364534833064586
+Dice for class 1: 0.6670194094569482
+Dice for class 2: 0.6423410404624278
+Dice for class 3: 0.0
+
+Case: Brats18_TCIA13_645_1 with Max area: 3620 and Mean Dice: 0.3523532899962459
+Dice for class 1: 0.37647752088460607
+Dice for class 2: 0.6805823491041317
+Dice for class 3: 0.0
+
+Case: Brats18_TCIA13_650_1 with Max area: 1088 and Mean Dice: 0.1551491200886917
+Dice for class 1: 0.3511136065880591
+Dice for class 2: 0.11433375367801597
+Dice for class 3: 0.0
+
