@@ -1,6 +1,6 @@
 import os 
 import numpy as np 
-import nibabel as nib
+from tqdm import tqdm
 from scipy.ndimage import label
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
@@ -151,7 +151,7 @@ def post_process(pred_vol, out_path):
     
     return processed_volume
 
-def remove_small_regions(volume, min_size=20):
+def remove_small_regions(volume, min_size=100):
     labeled_array, num_features = label(volume)
     for i in range(1, num_features + 1):
         if np.sum(labeled_array == i) < min_size:
@@ -186,32 +186,52 @@ if __name__ == "__main__":
     if not os.path.exists(post_process_dir):
         os.makedirs(post_process_dir)
     
+    txt_path = os.path.join(post_process_dir, "post_process_results.txt")
     
-    dict_post_processed = {}
+    lt_dice = []
+    lt_dice_class_1 = []
+    lt_dice_class_2 = []
+    lt_dice_class_3 = []
     
-    # Post-process the predictions
-    for key in keys:
-        pred_vol = load_volume(predictions_dict[key])
-        output_dir = os.path.join(pred_dir, key)
-        save_animation_dir = os.path.join(post_process_dir, key)        
-        if not os.path.exists(save_animation_dir):
-            os.makedirs(save_animation_dir)
-        
-        post_processed_vol_path = os.path.join(save_animation_dir, f"{key}_processed.npy")
-        post_processed_vol = post_process(pred_vol, post_processed_vol_path)
-        dict_post_processed[key] = post_processed_vol
-        
-        label_vol = load_volume(gt_dict[key])
-        dice_score_class_1 = dice_score_per_class(post_processed_vol, label_vol, 1)
-        dice_score_class_2 = dice_score_per_class(post_processed_vol, label_vol, 2)
-        dice_score_class_3 = dice_score_per_class(post_processed_vol, label_vol, 3)
-        mean_dice = (dice_score_class_1 + dice_score_class_2 + dice_score_class_3) / 3
-        
-        print(f"Post-processed volume: {key}")
-        print(f"Dice score for class 1: {dice_score_class_1}")
-        print(f"Dice score for class 2: {dice_score_class_2}")
-        print(f"Dice score for class 3: {dice_score_class_3}")
-        print(f"Mean Dice score: {mean_dice}")
-        print()
-        save_animation(label_vol, post_processed_vol, os.path.join(save_animation_dir,f"{key}_animation.gif"))
     
+    with open(txt_path, "w") as f:
+        f.write("Post-processing results\n")
+        f.write("------------------------------------------------\n")
+        dict_post_processed = {}
+        
+        # Post-process the predictions
+        with tqdm(total=len(keys), desc="Post-processing volumes") as pbar:
+            for key in keys:
+                pred_vol = load_volume(predictions_dict[key])
+                output_dir = os.path.join(pred_dir, key)
+                save_animation_dir = os.path.join(post_process_dir, key)        
+                if not os.path.exists(save_animation_dir):
+                    os.makedirs(save_animation_dir)
+                
+                post_processed_vol_path = os.path.join(save_animation_dir, f"{key}_processed.npy")
+                post_processed_vol = post_process(pred_vol, post_processed_vol_path)
+                dict_post_processed[key] = post_processed_vol
+                
+                label_vol = load_volume(gt_dict[key])
+                dice_score_class_1 = dice_score_per_class(post_processed_vol, label_vol, 1)
+                dice_score_class_2 = dice_score_per_class(post_processed_vol, label_vol, 2)
+                dice_score_class_3 = dice_score_per_class(post_processed_vol, label_vol, 3)
+                mean_dice = (dice_score_class_1 + dice_score_class_2 + dice_score_class_3) / 3
+                
+                print(f"Post-processed volume: {key}")
+                print(f"Dice score for class 1: {dice_score_class_1}")
+                print(f"Dice score for class 2: {dice_score_class_2}")
+                print(f"Dice score for class 3: {dice_score_class_3}")
+                print(f"Mean Dice score: {mean_dice}")
+                print()
+                save_animation(label_vol, post_processed_vol, os.path.join(save_animation_dir,f"{key}_animation.gif"))
+                lt_dice.append(mean_dice)
+                lt_dice_class_1.append(dice_score_class_1)
+                lt_dice_class_2.append(dice_score_class_2)
+                lt_dice_class_3.append(dice_score_class_3)
+                pbar.update(1)
+            f.write("Mean Dice score: {}\n".format(np.mean(lt_dice)))
+            f.write("Mean Dice score for class 1: {}\n".format(np.mean(lt_dice_class_1)))
+            f.write("Mean Dice score for class 2: {}\n".format(np.mean(lt_dice_class_2)))
+            f.write("Mean Dice score for class 3: {}\n".format(np.mean(lt_dice_class_3)))
+            f.write("------------------------------------------------\n")

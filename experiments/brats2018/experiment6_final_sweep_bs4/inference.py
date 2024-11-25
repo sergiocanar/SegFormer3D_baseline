@@ -215,6 +215,12 @@ if not os.path.exists(plots_folder):
     
 txt_results_path = os.path.join(plots_folder, 'results.txt')
 
+dice_Avg_lt = []
+dice_class1_lt = []
+dice_class2_lt = []
+dice_class3_lt = []
+
+
 with open(txt_results_path, 'w') as f:
     f.write('Results\n')
 
@@ -344,6 +350,17 @@ with open(txt_results_path, 'w') as f:
             f.write(f"Dice for class 3: {dice_class3}\n")
             f.write("\n")
             
+            dice_Avg_lt.append(mean_dice)
+            dice_class1_lt.append(dice_class1)
+            dice_class2_lt.append(dice_class2)
+            dice_class3_lt.append(dice_class3)
+            
             pbar.set_description(f"Case: {val_case_i} with Max area: {max_area}")
             pbar.update(1)
         
+        f.write(f"Average Dice: {np.mean(dice_Avg_lt)}\n")
+        f.write(f"Average Dice for class 1: {np.mean(dice_class1_lt)}\n")
+        f.write(f"Average Dice for class 2: {np.mean(dice_class2_lt)}\n")
+        f.write(f"Average Dice for class 3: {np.mean(dice_class3_lt)}\n")
+        f.write("\n")
+        f.write("End of results\n")
