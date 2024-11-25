@@ -30,36 +30,39 @@ sweep_config = {
     },
     "parameters": {
         "embed_dims": {
-            "values": [[32, 64, 160, 256], [64, 128, 256, 512]]
+            "values": [[32, 64, 160, 256], [16, 32, 80, 128], [64, 128, 320, 512]]
         },
         "patch_kernel_size": {
-            "values": [[7, 3, 3, 3], [5, 3, 3, 3]]
-        },
-        "patch_stride": {
-            "values": [[4, 2, 2, 2], [2, 2, 2, 2]]
+            "values": [[7, 3, 3, 3], [5, 3, 3, 3], [3, 3, 3, 3]]
         },
         "mlp_ratios": {
-            "values": [[4, 4, 4, 4], [4, 8, 4, 4]]
+            "values": [[4, 4, 4, 4], [2, 2, 4, 4]]
         },
         "num_heads": {
             "values": [[1, 2, 5, 8], [2, 4, 8, 16]]
         },
         "depths": {
-            "values": [[2, 2, 2, 2], [2, 3, 4, 5]]
+            "values": [[2, 2, 2, 2], [2, 2, 4, 4]]
         },
         "decoder_dropout": {
-            "values": [0.0, 0.1, 0.2]
+            "values": [0.1, 0.2]
+        },
+        "decoder_head_embedding_dim": {
+            "values": [512, 256]
         },
         # Flatten optimizer_args
         "lr": {
-            "values": [0.0001, 0.0005, 0.00001]
+            "values": [0.0005, 0.0001, 0.0005, 0.001]
         },
         "weight_decay": {
-            "values": [0.01, 0.001, 0.0001]
+            "values": [0.05, 0.03, 0.01, 0.001]
         },
         # Flatten scheduler_args
         "min_lr": {
-            "values": [0.000006, 0.00001, 0.000005]
+            "values": [0.000006, 0.00001, 0.000003]
+        },
+        "seed": {
+            "values": [33, 44, 42]
         }
     }
 }
@@ -320,7 +323,7 @@ if __name__ == "__main__":
 
     if args.sweep:
         # Launch experiment with sweep
-        launch_exp_with_sweep(config_path, sweep_config)
+        print(launch_exp_with_sweep(config_path, sweep_config))
     else:
         # Launch standard experiment
         launch_experiment(config_path)

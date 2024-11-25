@@ -91,7 +91,7 @@ dataset_parameters:
     fold_id: null
 
   train_dataloader_args:
-    batch_size: 4 
+    batch_size: 6 
     shuffle: True
     num_workers: 8
     drop_last: True
