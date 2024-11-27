@@ -1,0 +1,7 @@
+Post-processing results
+------------------------------------------------
+Mean Dice score: 0.628450248062892
+Mean Dice score for class 1: 0.6616990319184308
+Mean Dice score for class 2: 0.5793827240490733
+Mean Dice score for class 3: 0.644268988221172
+------------------------------------------------

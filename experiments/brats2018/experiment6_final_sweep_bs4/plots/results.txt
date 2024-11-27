@@ -204,3 +204,9 @@ Dice for class 1: 0.3511136065880591
 Dice for class 2: 0.11433375367801597
 Dice for class 3: 0.0
 
+Average Dice: 0.6095773769862989
+Average Dice for class 1: 0.6601151631222637
+Average Dice for class 2: 0.5667672813857044
+Average Dice for class 3: 0.6018496864509283
+
+End of results
